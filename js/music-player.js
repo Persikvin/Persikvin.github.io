@@ -6,19 +6,24 @@ let currentTrackIndex = 0;
 // Плейлист (замените на свои треки)
 const playlist = [
     {
-        title: "Мой трек 1",
-        artist: "Мой артист",
-        src: "путь/к/треку1.mp3"
+        title: "Space Ashole",
+        artist: "Space Station 13",
+        src: "audio/Space_Asshole.mp3"
     },
     {
-        title: "Мой трек 2", 
-        artist: "Мой артист",
-        src: "путь/к/треку2.mp3"
+        title: "Где моя нога", 
+        artist: "Серёга Пират",
+        src: "audio/gde_my_leg.mp3"
     },
     {
-        title: "Мой трек 3",
-        artist: "Мой артист", 
-        src: "путь/к/треку3.mp3"
+        title: "Space Song", 
+        artist: "Beach House",
+        src: "audio/Beach House - Space Song.mp3"
+    },
+    {
+        title: "breakcore",
+        artist: "Неизвестно", 
+        src: "audio/breakcore.mp3"
     }
 ];
 
