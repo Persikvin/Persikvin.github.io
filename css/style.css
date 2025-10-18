@@ -1,0 +1,459 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: white;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+    height: 100vh;
+    cursor: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.digit {
+    position: absolute;
+    font-size: 14px;
+    font-weight: bold;
+    pointer-events: none;
+    opacity: 1;
+    z-index: 1000;
+    text-shadow: 0 0 3px rgba(0, 80, 0, 0.7);
+}
+
+/* Канвас для математических формул и чёрной дыры */
+#math-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.window-xp {
+    position: absolute;
+    width: 400px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #ff6600;
+    border-radius: 8px;
+    box-shadow: 
+        0 0 20px rgba(255, 102, 0, 0.8),
+        inset 0 0 30px rgba(255, 102, 0, 0.1);
+    animation: glow 3s ease-in-out infinite alternate;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 
+            0 0 15px rgba(255, 102, 0, 0.6),
+            inset 0 0 20px rgba(255, 102, 0, 0.05);
+    }
+    100% {
+        box-shadow: 
+            0 0 35px rgba(255, 102, 0, 0.9),
+            inset 0 0 40px rgba(255, 102, 0, 0.15);
+    }
+}
+
+.window-title {
+    background: linear-gradient(to right, #000 0%, #1a0d00 50%, #000 100%);
+    padding: 8px 12px;
+    color: #ff6600;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ff6600;
+    text-shadow: 0 0 8px rgba(255, 102, 0, 0.7);
+    cursor: move;
+    user-select: none;
+}
+
+.window-controls {
+    display: flex;
+    gap: 4px;
+}
+
+.control-btn {
+    width: 16px;
+    height: 16px;
+    background: #1a0d00;
+    border: 1px solid #ff6600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    color: #ff6600;
+    cursor: pointer;
+    text-shadow: 0 0 5px rgba(255, 102, 0, 0.7);
+    transition: all 0.2s;
+}
+
+.control-btn:hover {
+    background: #331a00;
+    transform: scale(1.1);
+}
+
+.window-content {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.98);
+    min-height: 200px;
+    border: 2px inset #331a00;
+    box-shadow: inset 0 0 25px rgba(255, 102, 0, 0.1);
+}
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(26, 13, 0, 0.8);
+    border: 2px outset #663300;
+    color: #ff6600;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 102, 0, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.social-link:hover {
+    background: rgba(51, 26, 0, 0.9);
+    border: 2px inset #663300;
+    color: #ff8844;
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+}
+
+.social-link:hover::before {
+    left: 100%;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: #ff6600;
+    border: 1px solid #ff6600;
+    box-shadow: 0 0 8px rgba(255, 102, 0, 0.4);
+    transition: all 0.3s;
+}
+
+.social-link:hover .social-icon {
+    background: #331a00;
+    box-shadow: 0 0 12px rgba(255, 102, 0, 0.6);
+    transform: scale(1.1);
+}
+
+/* Эффекты разбитого стекла */
+.crack {
+    position: absolute;
+    background: rgba(255, 102, 0, 0.4);
+    pointer-events: none;
+    z-index: 101;
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.3);
+}
+
+.crack-1 {
+    width: 2px;
+    height: 80px;
+    top: 30px;
+    left: 60px;
+    transform: rotate(45deg);
+}
+
+.crack-2 {
+    width: 2px;
+    height: 60px;
+    top: 100px;
+    left: 340px;
+    transform: rotate(-30deg);
+}
+
+.crack-3 {
+    width: 1px;
+    height: 40px;
+    top: 150px;
+    left: 150px;
+    transform: rotate(15deg);
+}
+
+.broken-piece {
+    position: absolute;
+    width: 30px;
+    height: 20px;
+    background: rgba(255, 102, 0, 0.15);
+    border: 1px solid rgba(255, 102, 0, 0.4);
+    pointer-events: none;
+    z-index: 101;
+    box-shadow: 0 0 8px rgba(255, 102, 0, 0.2);
+}
+
+.piece-1 {
+    top: 40px;
+    left: 50px;
+    transform: rotate(10deg);
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+}
+
+.piece-2 {
+    top: 120px;
+    right: 40px;
+    transform: rotate(-5deg);
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.missing-piece {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    background: transparent;
+    border: 1px dashed rgba(255, 102, 0, 0.5);
+    pointer-events: none;
+    z-index: 101;
+}
+
+.missing-1 {
+    top: 70px;
+    left: 80px;
+    transform: rotate(20deg);
+}
+
+.missing-2 {
+    bottom: 50px;
+    right: 60px;
+    transform: rotate(-15deg);
+}
+
+.window-icon {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(45deg, #1a0d00, #ff6600);
+    border: 1px solid #000;
+    z-index: 102;
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+
+.drag-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: move;
+    z-index: 103;
+}
+
+/* Плеер в красно-чёрном стиле */
+.music-player {
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    transform: translateY(-50%);
+    width: 300px;
+    background: rgba(10, 0, 0, 0.9);
+    border: 2px solid #ff0000;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+}
+
+.player-title {
+    background: linear-gradient(to right, #200000 0%, #400000 50%, #200000 100%);
+    padding: 8px 12px;
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ff0000;
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    cursor: move;
+    user-select: none;
+}
+
+.player-content {
+    padding: 15px;
+    background: rgba(20, 0, 0, 0.95);
+}
+
+.track-info {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #ff4444;
+    font-size: 14px;
+    text-shadow: 0 0 3px rgba(255, 0, 0, 0.3);
+}
+
+.track-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.track-artist {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background: #300000;
+    border: 1px solid #600000;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, #ff0000, #ff4444);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #ff6666;
+    margin-bottom: 15px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.control-button {
+    background: #200000;
+    border: 1px solid #ff0000;
+    color: #ff4444;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    text-shadow: 0 0 3px rgba(255, 0, 0, 0.5);
+}
+
+.control-button:hover {
+    background: #400000;
+    transform: scale(1.1);
+}
+
+.control-button.play-pause {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.volume-slider {
+    flex: 1;
+    height: 4px;
+    background: #300000;
+    border: 1px solid #600000;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.volume-level {
+    height: 100%;
+    background: linear-gradient(to right, #ff0000, #ff4444);
+    border-radius: 1px;
+    width: 70%;
+}
+
+.playlist {
+    margin-top: 15px;
+    max-height: 120px;
+    overflow-y: auto;
+    border: 1px solid #400000;
+    border-radius: 4px;
+    background: #100000;
+}
+
+.playlist-item {
+    padding: 8px 12px;
+    border-bottom: 1px solid #300000;
+    cursor: pointer;
+    font-size: 12px;
+    color: #ff6666;
+    transition: all 0.2s;
+}
+
+.playlist-item:hover {
+    background: #300000;
+    color: #ff8888;
+}
+
+.playlist-item.active {
+    background: #400000;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+/* Стили для скроллбара плейлиста */
+.playlist::-webkit-scrollbar {
+    width: 6px;
+}
+
+.playlist::-webkit-scrollbar-track {
+    background: #200000;
+}
+
+.playlist::-webkit-scrollbar-thumb {
+    background: #ff0000;
+    border-radius: 3px;
+}
