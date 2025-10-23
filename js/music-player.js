@@ -262,65 +262,18 @@ function animateGlitch() {
         // Полная очистка canvas
         glitchCtx.clearRect(0, 0, glitchCanvas.width, glitchCanvas.height);
         
-        // ЖЁСТКИЕ ГЛИТЧИ - части сайта накладываются друг на друга
+        // РАЗНОЦВЕТНЫЕ ГЛИТЧИ
         
-        // 1. Крупные смещения всего контента
-        if (Math.random() < 0.4) {
-            const shiftX = (Math.random() - 0.5) * 100; // до 50px смещения
-            const shiftY = (Math.random() - 0.5) * 60; // до 30px смещения
-            
-            glitchCtx.globalAlpha = 0.7;
-            glitchCtx.drawImage(
-                mathCanvas, 
-                0, 0, glitchCanvas.width, glitchCanvas.height,
-                shiftX, shiftY, glitchCanvas.width, glitchCanvas.height
-            );
-            glitchCtx.globalAlpha = 1;
-        }
-        
-        // 2. Разрывы и дублирования частей экрана
-        if (Math.random() < 0.3) {
-            const sliceHeight = 30 + Math.random() * 100;
-            const sliceY = Math.random() * (glitchCanvas.height - sliceHeight);
-            const shiftX = (Math.random() - 0.5) * 80;
-            
-            // Дублируем и смещаем полосу
-            glitchCtx.globalAlpha = 0.8;
-            glitchCtx.drawImage(
-                mathCanvas,
-                0, sliceY, glitchCanvas.width, sliceHeight,
-                shiftX, sliceY + (Math.random() - 0.5) * 40, glitchCanvas.width, sliceHeight
-            );
-            glitchCtx.globalAlpha = 1;
-        }
-        
-        // 3. Множественные наложения
-        if (Math.random() < 0.25) {
-            const layers = 2 + Math.floor(Math.random() * 3);
-            for (let i = 0; i < layers; i++) {
-                const offsetX = (Math.random() - 0.5) * 60;
-                const offsetY = (Math.random() - 0.5) * 40;
-                const scale = 0.8 + Math.random() * 0.4;
-                
-                glitchCtx.globalAlpha = 0.3 + Math.random() * 0.3;
-                glitchCtx.drawImage(
-                    mathCanvas,
-                    0, 0, glitchCanvas.width, glitchCanvas.height,
-                    offsetX, offsetY, glitchCanvas.width * scale, glitchCanvas.height * scale
-                );
-            }
-            glitchCtx.globalAlpha = 1;
-        }
-        
-        // 4. Резкие цветовые каналы (RGB split)
-        if (Math.random() < 0.35) {
-            const rShift = (Math.random() - 0.5) * 15;
-            const gShift = (Math.random() - 0.5) * 15;
-            const bShift = (Math.random() - 0.5) * 15;
+        // 1. RGB split с разными цветами
+        if (Math.random() < 0.5) {
+            const rShift = -10 + Math.random() * 20;
+            const gShift = -10 + Math.random() * 20;
+            const bShift = -10 + Math.random() * 20;
             
             // Красный канал
             glitchCtx.globalCompositeOperation = 'screen';
-            glitchCtx.globalAlpha = 0.4;
+            glitchCtx.filter = 'brightness(2)';
+            glitchCtx.globalAlpha = 0.6;
             glitchCtx.drawImage(
                 mathCanvas,
                 0, 0, glitchCanvas.width, glitchCanvas.height,
@@ -328,73 +281,226 @@ function animateGlitch() {
             );
             
             // Зелёный канал
-            glitchCtx.globalAlpha = 0.4;
+            glitchCtx.filter = 'brightness(1.5)';
+            glitchCtx.globalAlpha = 0.5;
             glitchCtx.drawImage(
                 mathCanvas,
                 0, 0, glitchCanvas.width, glitchCanvas.height,
-                gShift, 0, glitchCanvas.width, glitchCanvas.height
+                gShift, 2, glitchCanvas.width, glitchCanvas.height
             );
             
             // Синий канал
-            glitchCtx.globalAlpha = 0.4;
+            glitchCtx.filter = 'brightness(1.8)';
+            glitchCtx.globalAlpha = 0.5;
             glitchCtx.drawImage(
                 mathCanvas,
                 0, 0, glitchCanvas.width, glitchCanvas.height,
-                bShift, 0, glitchCanvas.width, glitchCanvas.height
+                bShift, -2, glitchCanvas.width, glitchCanvas.height
             );
             
+            glitchCtx.filter = 'none';
             glitchCtx.globalAlpha = 1;
             glitchCtx.globalCompositeOperation = 'source-over';
         }
         
-        // 5. Инвертированные участки
-        if (Math.random() < 0.2) {
-            const invertWidth = 100 + Math.random() * 200;
-            const invertHeight = 50 + Math.random() * 150;
-            const invertX = Math.random() * (glitchCanvas.width - invertWidth);
-            const invertY = Math.random() * (glitchCanvas.height - invertHeight);
+        // 2. Неоновые цветовые сдвиги
+        if (Math.random() < 0.4) {
+            const colors = [
+                'rgba(255, 0, 0, 0.4)',    // Красный
+                'rgba(0, 255, 0, 0.4)',    // Зелёный
+                'rgba(0, 0, 255, 0.4)',    // Синий
+                'rgba(255, 255, 0, 0.4)',  // Жёлтый
+                'rgba(255, 0, 255, 0.4)',  // Пурпурный
+                'rgba(0, 255, 255, 0.4)'   // Голубой
+            ];
             
-            glitchCtx.globalCompositeOperation = 'difference';
-            glitchCtx.globalAlpha = 0.6;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const shiftX = (Math.random() - 0.5) * 80;
+            const shiftY = (Math.random() - 0.5) * 40;
+            
+            // Цветное наложение
+            glitchCtx.globalCompositeOperation = 'screen';
+            glitchCtx.fillStyle = color;
+            glitchCtx.fillRect(0, 0, glitchCanvas.width, glitchCanvas.height);
+            
+            glitchCtx.globalAlpha = 0.7;
             glitchCtx.drawImage(
                 mathCanvas,
-                invertX, invertY, invertWidth, invertHeight,
-                invertX, invertY, invertWidth, invertHeight
+                0, 0, glitchCanvas.width, glitchCanvas.height,
+                shiftX, shiftY, glitchCanvas.width, glitchCanvas.height
             );
             glitchCtx.globalAlpha = 1;
             glitchCtx.globalCompositeOperation = 'source-over';
         }
         
-        // 6. Горизонтальные разрывы
-        if (Math.random() < 0.15) {
-            const tearCount = 3 + Math.floor(Math.random() * 5);
-            for (let i = 0; i < tearCount; i++) {
-                const tearY = Math.random() * glitchCanvas.height;
-                const tearHeight = 2 + Math.random() * 8;
-                const tearShift = (Math.random() - 0.5) * 50;
+        // 3. Цифровой шум с цветами VHS
+        if (Math.random() < 0.3) {
+            const noiseColors = [
+                'rgba(255, 50, 50, 0.1)',    // Красный шум
+                'rgba(50, 255, 50, 0.1)',    // Зелёный шум
+                'rgba(50, 50, 255, 0.1)',    // Синий шум
+                'rgba(255, 255, 100, 0.1)'   // Жёлтый шум
+            ];
+            
+            for (let i = 0; i < 200; i++) {
+                const x = Math.random() * glitchCanvas.width;
+                const y = Math.random() * glitchCanvas.height;
+                const width = 1 + Math.random() * 10;
+                const height = 1 + Math.random() * 5;
+                const color = noiseColors[Math.floor(Math.random() * noiseColors.length)];
                 
-                glitchCtx.globalAlpha = 0.9;
+                glitchCtx.fillStyle = color;
+                glitchCtx.fillRect(x, y, width, height);
+            }
+        }
+        
+        // 4. Цветные горизонтальные полосы
+        if (Math.random() < 0.25) {
+            const stripeColors = [
+                'rgba(255, 0, 0, 0.3)',      // Красный
+                'rgba(0, 255, 0, 0.3)',      // Зелёный
+                'rgba(0, 0, 255, 0.3)',      // Синий
+                'rgba(255, 255, 0, 0.3)',    // Жёлтый
+                'rgba(255, 0, 255, 0.3)'     // Пурпурный
+            ];
+            
+            const stripeCount = 3 + Math.floor(Math.random() * 8);
+            for (let i = 0; i < stripeCount; i++) {
+                const y = Math.random() * glitchCanvas.height;
+                const height = 1 + Math.random() * 8;
+                const color = stripeColors[Math.floor(Math.random() * stripeColors.length)];
+                const shiftX = (Math.random() - 0.5) * 30;
+                
+                glitchCtx.fillStyle = color;
+                glitchCtx.fillRect(0, y, glitchCanvas.width, height);
+                
+                // Смещённая копия полосы
+                glitchCtx.globalAlpha = 0.6;
                 glitchCtx.drawImage(
                     mathCanvas,
-                    0, tearY, glitchCanvas.width, tearHeight,
-                    tearShift, tearY, glitchCanvas.width, tearHeight
+                    0, y, glitchCanvas.width, height,
+                    shiftX, y, glitchCanvas.width, height
+                );
+                glitchCtx.globalAlpha = 1;
+            }
+        }
+        
+        // 5. Psychedelic цветовые искажения
+        if (Math.random() < 0.2) {
+            const waveIntensity = Math.random() * 20;
+            const colorPhase = Math.random() * Math.PI * 2;
+            
+            for (let channel = 0; channel < 3; channel++) {
+                const channelShift = Math.sin(colorPhase + channel * Math.PI * 2/3) * waveIntensity;
+                
+                glitchCtx.globalCompositeOperation = channel === 0 ? 'screen' : 
+                                                   channel === 1 ? 'screen' : 'screen';
+                glitchCtx.globalAlpha = 0.3;
+                
+                const channelColors = [
+                    'rgba(255, 0, 0, 0.5)',    // Красный
+                    'rgba(0, 255, 0, 0.5)',    // Зелёный  
+                    'rgba(0, 0, 255, 0.5)'     // Синий
+                ];
+                
+                glitchCtx.fillStyle = channelColors[channel];
+                glitchCtx.fillRect(0, 0, glitchCanvas.width, glitchCanvas.height);
+                
+                glitchCtx.drawImage(
+                    mathCanvas,
+                    0, 0, glitchCanvas.width, glitchCanvas.height,
+                    channelShift, Math.sin(Date.now() * 0.01 + channel) * 5, 
+                    glitchCanvas.width, glitchCanvas.height
                 );
             }
             glitchCtx.globalAlpha = 1;
+            glitchCtx.globalCompositeOperation = 'source-over';
         }
         
-        // 7. Статические помехи
-        if (Math.random() < 0.1) {
-            const staticDensity = 500 + Math.random() * 1000;
-            for (let i = 0; i < staticDensity; i++) {
+        // 6. Цветные блочные артефакты
+        if (Math.random() < 0.35) {
+            const blockSize = 10 + Math.random() * 40;
+            const blockCount = 5 + Math.floor(Math.random() * 15);
+            
+            const blockColors = [
+                'rgba(255, 100, 100, 0.8)',   // Светло-красный
+                'rgba(100, 255, 100, 0.8)',   // Светло-зелёный
+                'rgba(100, 100, 255, 0.8)',   // Светло-синий
+                'rgba(255, 255, 100, 0.8)',   // Светло-жёлтый
+                'rgba(255, 100, 255, 0.8)'    // Светло-пурпурный
+            ];
+            
+            for (let i = 0; i < blockCount; i++) {
                 const x = Math.random() * glitchCanvas.width;
                 const y = Math.random() * glitchCanvas.height;
-                const size = Math.random() * 3;
-                const brightness = Math.random() * 255;
+                const color = blockColors[Math.floor(Math.random() * blockColors.length)];
+                const shiftX = (Math.random() - 0.5) * 50;
+                const shiftY = (Math.random() - 0.5) * 30;
                 
-                glitchCtx.fillStyle = `rgb(${brightness}, ${brightness}, ${brightness})`;
-                glitchCtx.fillRect(x, y, size, size);
+                // Цветной блок
+                glitchCtx.fillStyle = color;
+                glitchCtx.fillRect(x, y, blockSize, blockSize);
+                
+                // Смещённый контент под блоком
+                glitchCtx.globalAlpha = 0.9;
+                glitchCtx.drawImage(
+                    mathCanvas,
+                    x, y, blockSize, blockSize,
+                    x + shiftX, y + shiftY, blockSize, blockSize
+                );
+                glitchCtx.globalAlpha = 1;
             }
+        }
+        
+        // 7. Мерцающие пиксели радужных цветов
+        if (Math.random() < 0.15) {
+            const pixelCount = 100 + Math.floor(Math.random() * 400);
+            
+            for (let i = 0; i < pixelCount; i++) {
+                const x = Math.floor(Math.random() * glitchCanvas.width);
+                const y = Math.floor(Math.random() * glitchCanvas.height);
+                
+                // Случайный яркий цвет
+                const r = Math.random() > 0.5 ? 255 : 0;
+                const g = Math.random() > 0.5 ? 255 : 0;
+                const b = Math.random() > 0.5 ? 255 : 0;
+                const alpha = 0.3 + Math.random() * 0.7;
+                
+                glitchCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                glitchCtx.fillRect(x, y, 1, 1);
+            }
+        }
+        
+        // 8. Градиентные цветовые наложения
+        if (Math.random() < 0.1) {
+            const gradientType = Math.floor(Math.random() * 3);
+            let gradient;
+            
+            if (gradientType === 0) {
+                // Радужный градиент
+                gradient = glitchCtx.createLinearGradient(0, 0, glitchCanvas.width, 0);
+                gradient.addColorStop(0, 'rgba(255, 0, 0, 0.2)');
+                gradient.addColorStop(0.5, 'rgba(0, 255, 0, 0.2)');
+                gradient.addColorStop(1, 'rgba(0, 0, 255, 0.2)');
+            } else if (gradientType === 1) {
+                // Неоновый градиент
+                gradient = glitchCtx.createRadialGradient(
+                    glitchCanvas.width/2, glitchCanvas.height/2, 0,
+                    glitchCanvas.width/2, glitchCanvas.height/2, glitchCanvas.width/2
+                );
+                gradient.addColorStop(0, 'rgba(255, 0, 255, 0.3)');
+                gradient.addColorStop(1, 'rgba(0, 255, 255, 0.3)');
+            } else {
+                // Тёплый градиент
+                gradient = glitchCtx.createLinearGradient(0, 0, 0, glitchCanvas.height);
+                gradient.addColorStop(0, 'rgba(255, 100, 0, 0.2)');
+                gradient.addColorStop(1, 'rgba(255, 255, 0, 0.2)');
+            }
+            
+            glitchCtx.globalCompositeOperation = 'overlay';
+            glitchCtx.fillStyle = gradient;
+            glitchCtx.fillRect(0, 0, glitchCanvas.width, glitchCanvas.height);
+            glitchCtx.globalCompositeOperation = 'source-over';
         }
         
     }
