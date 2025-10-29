@@ -1,9 +1,8 @@
-// Музыкальный плеер
+
 const audioPlayer = new Audio();
 let isPlaying = false;
 let currentTrackIndex = 0;
 
-// Плейлист (замените на свои треки)
 const playlist = [
     {
         title: "Space Ashole",
@@ -27,7 +26,7 @@ const playlist = [
     }
 ];
 
-// Элементы плеера
+
 const playPauseBtn = document.getElementById('play-pause-btn');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
@@ -41,11 +40,11 @@ const volumeSlider = document.getElementById('volume-slider');
 const volumeLevel = document.getElementById('volume-level');
 const playlistEl = document.getElementById('playlist');
 
-// Инициализация плеера
+
 function initPlayer() {
     initEffects();
     animateGlitch();
-    // Заполняем плейлист
+
     playlist.forEach((track, index) => {
         const item = document.createElement('div');
         item.className = 'playlist-item';
@@ -55,14 +54,14 @@ function initPlayer() {
         playlistEl.appendChild(item);
     });
     
-    // Устанавливаем громкость
+
     audioPlayer.volume = 0.7;
     updateVolumeDisplay();
     
-    // Загружаем первый трек
+
     loadTrack(currentTrackIndex);
     
-    // События плеера
+
     playPauseBtn.addEventListener('click', togglePlay);
     prevBtn.addEventListener('click', prevTrack);
     nextBtn.addEventListener('click', nextTrack);
@@ -83,10 +82,8 @@ function loadTrack(index) {
     currentTrackEl.textContent = track.title;
     currentArtistEl.textContent = track.artist;
 
-    // Обновляем эффекты для этого трека
     updateEffects(track.title);
     
-    // Обновляем активный элемент плейлиста
     document.querySelectorAll('.playlist-item').forEach((item, i) => {
         item.classList.toggle('active', i === index);
     });
@@ -167,16 +164,15 @@ function formatTime(seconds) {
     const sec = Math.floor(seconds % 60);
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
 }
-// Эффекты только для breakcore
+
 const effectTrack = "breakcore";
 
-// Элементы для эффектов
 let glitchCanvas, glitchCtx;
 let crtFilter, scanlines;
 let currentEffects = false;
 
 function initEffects() {
-    // Создаём canvas для глитч-эффектов
+
     glitchCanvas = document.createElement('canvas');
     glitchCtx = glitchCanvas.getContext('2d');
     glitchCanvas.style.position = 'fixed';
@@ -193,7 +189,6 @@ function initEffects() {
     resizeGlitchCanvas();
     window.addEventListener('resize', resizeGlitchCanvas);
     
-    // Создаём элементы для CRT эффекта
     crtFilter = document.createElement('div');
     crtFilter.style.position = 'fixed';
     crtFilter.style.top = '0';
@@ -213,7 +208,6 @@ function initEffects() {
     crtFilter.style.mixBlendMode = 'multiply';
     document.body.appendChild(crtFilter);
     
-    // Создаём scanlines
     scanlines = document.createElement('div');
     scanlines.style.position = 'fixed';
     scanlines.style.top = '0';
@@ -243,13 +237,13 @@ function updateEffects(trackTitle) {
     const shouldEnable = trackTitle === effectTrack;
     
     if (shouldEnable && !currentEffects) {
-        // Плавное включение эффектов
+
         glitchCanvas.style.opacity = '0.9';
         crtFilter.style.opacity = '0.4';
         scanlines.style.opacity = '0.6';
         currentEffects = true;
     } else if (!shouldEnable && currentEffects) {
-        // Плавное выключение эффектов
+
         glitchCanvas.style.opacity = '0';
         crtFilter.style.opacity = '0';
         scanlines.style.opacity = '0';
@@ -259,18 +253,15 @@ function updateEffects(trackTitle) {
 
 function animateGlitch() {
     if (currentEffects) {
-        // Полная очистка canvas
+
         glitchCtx.clearRect(0, 0, glitchCanvas.width, glitchCanvas.height);
         
-        // РАЗНОЦВЕТНЫЕ ГЛИТЧИ
-        
-        // 1. RGB split с разными цветами
+
         if (Math.random() < 0.5) {
             const rShift = -10 + Math.random() * 20;
             const gShift = -10 + Math.random() * 20;
             const bShift = -10 + Math.random() * 20;
             
-            // Красный канал
             glitchCtx.globalCompositeOperation = 'screen';
             glitchCtx.filter = 'brightness(2)';
             glitchCtx.globalAlpha = 0.6;
@@ -280,7 +271,6 @@ function animateGlitch() {
                 rShift, 0, glitchCanvas.width, glitchCanvas.height
             );
             
-            // Зелёный канал
             glitchCtx.filter = 'brightness(1.5)';
             glitchCtx.globalAlpha = 0.5;
             glitchCtx.drawImage(
@@ -289,7 +279,6 @@ function animateGlitch() {
                 gShift, 2, glitchCanvas.width, glitchCanvas.height
             );
             
-            // Синий канал
             glitchCtx.filter = 'brightness(1.8)';
             glitchCtx.globalAlpha = 0.5;
             glitchCtx.drawImage(
@@ -303,15 +292,14 @@ function animateGlitch() {
             glitchCtx.globalCompositeOperation = 'source-over';
         }
         
-        // 2. Неоновые цветовые сдвиги
         if (Math.random() < 0.4) {
             const colors = [
-                'rgba(255, 0, 0, 0.4)',    // Красный
-                'rgba(0, 255, 0, 0.4)',    // Зелёный
-                'rgba(0, 0, 255, 0.4)',    // Синий
-                'rgba(255, 255, 0, 0.4)',  // Жёлтый
-                'rgba(255, 0, 255, 0.4)',  // Пурпурный
-                'rgba(0, 255, 255, 0.4)'   // Голубой
+                'rgba(255, 0, 0, 0.4)',    
+                'rgba(0, 255, 0, 0.4)',    
+                'rgba(0, 0, 255, 0.4)',    
+                'rgba(255, 255, 0, 0.4)',  
+                'rgba(255, 0, 255, 0.4)',  
+                'rgba(0, 255, 255, 0.4)'  
             ];
             
             const color = colors[Math.floor(Math.random() * colors.length)];
@@ -333,13 +321,13 @@ function animateGlitch() {
             glitchCtx.globalCompositeOperation = 'source-over';
         }
         
-        // 3. Цифровой шум с цветами VHS
+
         if (Math.random() < 0.3) {
             const noiseColors = [
-                'rgba(255, 50, 50, 0.1)',    // Красный шум
-                'rgba(50, 255, 50, 0.1)',    // Зелёный шум
-                'rgba(50, 50, 255, 0.1)',    // Синий шум
-                'rgba(255, 255, 100, 0.1)'   // Жёлтый шум
+                'rgba(255, 50, 50, 0.1)',    
+                'rgba(50, 255, 50, 0.1)',    
+                'rgba(50, 50, 255, 0.1)',   
+                'rgba(255, 255, 100, 0.1)'  
             ];
             
             for (let i = 0; i < 200; i++) {
@@ -354,14 +342,13 @@ function animateGlitch() {
             }
         }
         
-        // 4. Цветные горизонтальные полосы
         if (Math.random() < 0.25) {
             const stripeColors = [
-                'rgba(255, 0, 0, 0.3)',      // Красный
-                'rgba(0, 255, 0, 0.3)',      // Зелёный
-                'rgba(0, 0, 255, 0.3)',      // Синий
-                'rgba(255, 255, 0, 0.3)',    // Жёлтый
-                'rgba(255, 0, 255, 0.3)'     // Пурпурный
+                'rgba(255, 0, 0, 0.3)',      
+                'rgba(0, 255, 0, 0.3)',     
+                'rgba(0, 0, 255, 0.3)',      
+                'rgba(255, 255, 0, 0.3)',    
+                'rgba(255, 0, 255, 0.3)'     
             ];
             
             const stripeCount = 3 + Math.floor(Math.random() * 8);
@@ -374,7 +361,6 @@ function animateGlitch() {
                 glitchCtx.fillStyle = color;
                 glitchCtx.fillRect(0, y, glitchCanvas.width, height);
                 
-                // Смещённая копия полосы
                 glitchCtx.globalAlpha = 0.6;
                 glitchCtx.drawImage(
                     mathCanvas,
@@ -385,7 +371,6 @@ function animateGlitch() {
             }
         }
         
-        // 5. Psychedelic цветовые искажения
         if (Math.random() < 0.2) {
             const waveIntensity = Math.random() * 20;
             const colorPhase = Math.random() * Math.PI * 2;
@@ -398,9 +383,9 @@ function animateGlitch() {
                 glitchCtx.globalAlpha = 0.3;
                 
                 const channelColors = [
-                    'rgba(255, 0, 0, 0.5)',    // Красный
-                    'rgba(0, 255, 0, 0.5)',    // Зелёный  
-                    'rgba(0, 0, 255, 0.5)'     // Синий
+                    'rgba(255, 0, 0, 0.5)',    
+                    'rgba(0, 255, 0, 0.5)',    
+                    'rgba(0, 0, 255, 0.5)'     
                 ];
                 
                 glitchCtx.fillStyle = channelColors[channel];
@@ -423,11 +408,11 @@ function animateGlitch() {
             const blockCount = 5 + Math.floor(Math.random() * 15);
             
             const blockColors = [
-                'rgba(255, 100, 100, 0.8)',   // Светло-красный
-                'rgba(100, 255, 100, 0.8)',   // Светло-зелёный
-                'rgba(100, 100, 255, 0.8)',   // Светло-синий
-                'rgba(255, 255, 100, 0.8)',   // Светло-жёлтый
-                'rgba(255, 100, 255, 0.8)'    // Светло-пурпурный
+                'rgba(255, 100, 100, 0.8)',   
+                'rgba(100, 255, 100, 0.8)',  
+                'rgba(100, 100, 255, 0.8)',  
+                'rgba(255, 255, 100, 0.8)',  
+                'rgba(255, 100, 255, 0.8)'    
             ];
             
             for (let i = 0; i < blockCount; i++) {
@@ -437,11 +422,11 @@ function animateGlitch() {
                 const shiftX = (Math.random() - 0.5) * 50;
                 const shiftY = (Math.random() - 0.5) * 30;
                 
-                // Цветной блок
+
                 glitchCtx.fillStyle = color;
                 glitchCtx.fillRect(x, y, blockSize, blockSize);
                 
-                // Смещённый контент под блоком
+
                 glitchCtx.globalAlpha = 0.9;
                 glitchCtx.drawImage(
                     mathCanvas,
@@ -452,7 +437,6 @@ function animateGlitch() {
             }
         }
         
-        // 7. Мерцающие пиксели радужных цветов
         if (Math.random() < 0.15) {
             const pixelCount = 100 + Math.floor(Math.random() * 400);
             
@@ -460,7 +444,6 @@ function animateGlitch() {
                 const x = Math.floor(Math.random() * glitchCanvas.width);
                 const y = Math.floor(Math.random() * glitchCanvas.height);
                 
-                // Случайный яркий цвет
                 const r = Math.random() > 0.5 ? 255 : 0;
                 const g = Math.random() > 0.5 ? 255 : 0;
                 const b = Math.random() > 0.5 ? 255 : 0;
@@ -471,19 +454,18 @@ function animateGlitch() {
             }
         }
         
-        // 8. Градиентные цветовые наложения
         if (Math.random() < 0.1) {
             const gradientType = Math.floor(Math.random() * 3);
             let gradient;
             
             if (gradientType === 0) {
-                // Радужный градиент
+
                 gradient = glitchCtx.createLinearGradient(0, 0, glitchCanvas.width, 0);
                 gradient.addColorStop(0, 'rgba(255, 0, 0, 0.2)');
                 gradient.addColorStop(0.5, 'rgba(0, 255, 0, 0.2)');
                 gradient.addColorStop(1, 'rgba(0, 0, 255, 0.2)');
             } else if (gradientType === 1) {
-                // Неоновый градиент
+
                 gradient = glitchCtx.createRadialGradient(
                     glitchCanvas.width/2, glitchCanvas.height/2, 0,
                     glitchCanvas.width/2, glitchCanvas.height/2, glitchCanvas.width/2
@@ -491,7 +473,7 @@ function animateGlitch() {
                 gradient.addColorStop(0, 'rgba(255, 0, 255, 0.3)');
                 gradient.addColorStop(1, 'rgba(0, 255, 255, 0.3)');
             } else {
-                // Тёплый градиент
+
                 gradient = glitchCtx.createLinearGradient(0, 0, 0, glitchCanvas.height);
                 gradient.addColorStop(0, 'rgba(255, 100, 0, 0.2)');
                 gradient.addColorStop(1, 'rgba(255, 255, 0, 0.2)');

@@ -1,8 +1,8 @@
-// Математические формулы и чёрная дыра
+
 const mathCanvas = document.getElementById('math-canvas');
 const ctx = mathCanvas.getContext('2d');
 
-// Настройка размера canvas
+
 function resizeCanvas() {
     mathCanvas.width = window.innerWidth;
     mathCanvas.height = window.innerHeight;
@@ -10,7 +10,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// Математические формулы
+
 const formulas = [
     "E = mc²",
     "F = G(m₁m₂)/r²",
@@ -39,7 +39,7 @@ const blackHole = {
     distortionRadius: 200
 };
 
-// Создание частиц с формулами
+
 class FormulaParticle {
     constructor() {
         this.reset();
@@ -62,7 +62,7 @@ class FormulaParticle {
     update() {
         this.age++;
         
-        // Гравитационное притяжение к чёрной дыре
+
         const dx = blackHole.x - this.x;
         const dy = blackHole.y - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -72,14 +72,14 @@ class FormulaParticle {
             this.vx += (dx / distance) * force * 0.08;
             this.vy += (dy / distance) * force * 0.08;
         } else {
-            // Поглощение чёрной дырой
+
             this.reset();
         }
         
         this.x += this.vx;
         this.y += this.vy;
         
-        // Затухание скорости
+
         this.vx *= 0.998;
         this.vy *= 0.998;
         
@@ -98,13 +98,13 @@ class FormulaParticle {
     }
 }
 
-// Создание сетки пространства-времени (белая)
+
 function drawSpaceTimeGrid() {
     ctx.strokeStyle = '#ffffff';
     ctx.globalAlpha = 0.15;
     ctx.lineWidth = 0.5;
     
-    // Горизонтальные линии
+
     for (let y = 0; y < mathCanvas.height; y += 30) {
         ctx.beginPath();
         ctx.moveTo(0, y);
@@ -112,7 +112,7 @@ function drawSpaceTimeGrid() {
         ctx.stroke();
     }
     
-    // Вертикальные линии
+
     for (let x = 0; x < mathCanvas.width; x += 30) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -121,9 +121,9 @@ function drawSpaceTimeGrid() {
     }
 }
 
-// Рисование чёрной дыры в виде схемы
+
 function drawBlackHole() {
-    // Эффект искажения пространства
+
     const distortionGradient = ctx.createRadialGradient(
         blackHole.x, blackHole.y, blackHole.radius,
         blackHole.x, blackHole.y, blackHole.distortionRadius
@@ -132,35 +132,35 @@ function drawBlackHole() {
     distortionGradient.addColorStop(0.3, 'rgba(200, 200, 255, 0.1)');
     distortionGradient.addColorStop(1, 'transparent');
     
-    // Рисуем искажение
+
     ctx.fillStyle = distortionGradient;
     ctx.beginPath();
     ctx.arc(blackHole.x, blackHole.y, blackHole.distortionRadius, 0, Math.PI * 2);
     ctx.fill();
     
-    // Аккреционный диск (схематично)
+
     ctx.strokeStyle = '#ffffff';
     ctx.globalAlpha = 0.6;
     ctx.lineWidth = 2;
     
-    // Внешнее кольцо
+
     ctx.beginPath();
     ctx.arc(blackHole.x, blackHole.y, blackHole.radius * 2.5, 0, Math.PI * 2);
     ctx.stroke();
     
-    // Внутреннее кольцо
+
     ctx.beginPath();
     ctx.arc(blackHole.x, blackHole.y, blackHole.radius * 1.8, 0, Math.PI * 2);
     ctx.stroke();
     
-    // Горизонт событий
+
     ctx.fillStyle = '#000000';
     ctx.globalAlpha = 0.9;
     ctx.beginPath();
     ctx.arc(blackHole.x, blackHole.y, blackHole.radius, 0, Math.PI * 2);
     ctx.fill();
     
-    // Обводка горизонта событий
+
     ctx.strokeStyle = '#ffffff';
     ctx.globalAlpha = 0.8;
     ctx.lineWidth = 1;
@@ -168,7 +168,7 @@ function drawBlackHole() {
     ctx.arc(blackHole.x, blackHole.y, blackHole.radius, 0, Math.PI * 2);
     ctx.stroke();
     
-    // Схематические линии гравитации
+
     ctx.strokeStyle = '#ffffff';
     ctx.globalAlpha = 0.3;
     ctx.lineWidth = 1;
@@ -186,7 +186,7 @@ function drawBlackHole() {
         ctx.stroke();
     }
     
-    // Точка сингулярности
+
     ctx.fillStyle = '#ffffff';
     ctx.globalAlpha = 1;
     ctx.beginPath();
@@ -194,11 +194,11 @@ function drawBlackHole() {
     ctx.fill();
 }
 
-// Искажение сетки вокруг чёрной дыры
+
 function distortGrid() {
     ctx.save();
     
-    // Создаём эффект гравитационного линзирования
+
     const distortionStrength = 0.3;
     
     for (let y = 0; y < mathCanvas.height; y += 30) {
@@ -216,7 +216,7 @@ function distortGrid() {
                 ctx.globalAlpha = 0.2 * distortion;
                 ctx.lineWidth = 1;
                 
-                // Рисуем искажённые линии сетки
+
                 ctx.beginPath();
                 ctx.moveTo(x + shiftX, y + shiftY);
                 ctx.lineTo(x + 30 + shiftX, y + shiftY);
@@ -233,14 +233,14 @@ function distortGrid() {
     ctx.restore();
 }
 
-// Инициализация частиц
+
 for (let i = 0; i < 20; i++) {
     formulaParticles.push(new FormulaParticle());
 }
 
-// Анимация математического фона
+
 function animateMathBackground() {
-    // Очистка без следов
+
     ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
     ctx.fillRect(0, 0, mathCanvas.width, mathCanvas.height);
     
