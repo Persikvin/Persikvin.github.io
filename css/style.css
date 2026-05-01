@@ -6,7 +6,7 @@ body {
     font-family: 'Courier New', monospace;
     overflow: hidden;
     height: 100vh;
-    cursor: none;
+    cursor: auto;
     display: flex;
     justify-content: center;
     align-items: center;
